@@ -1,4 +1,4 @@
-import { IndianRupee } from "lucide-react";
+import { IndianRupee, LoaderCircle } from "lucide-react";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styles from "./login.module.css";
@@ -9,9 +9,12 @@ export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [mode, setMode] = useState("login");
+  const [isLoggingIn, setIsLoggingIn] = useState(false);
+  const [isSigningUp, setIsSigningUp] = useState(false);
   const navigate = useNavigate();
 
   const handleSignUp = async () => {
+    setIsSigningUp(true);
     try {
       const response = await fetch(
         "https://ai-powered-expense-tracker-wikz.onrender.com/signup",
@@ -29,6 +32,7 @@ export default function Login() {
       );
       const data = await response.json();
       if (!response.ok) {
+        setIsSigningUp(false);
         alert(data.message);
         return;
       }
@@ -41,9 +45,11 @@ export default function Login() {
     } catch (err) {
       console.log("Error: ", err);
     }
+    setIsSigningUp(false);
   };
 
   const handleLogin = async () => {
+    setIsLoggingIn(true);
     try {
       const response = await fetch(
         "https://ai-powered-expense-tracker-wikz.onrender.com/login",
@@ -61,6 +67,7 @@ export default function Login() {
 
       const data = await response.json();
       if (!response.ok) {
+        setIsLoggingIn(false);
         alert(data.message);
         return;
       }
@@ -71,6 +78,7 @@ export default function Login() {
     } catch (err) {
       console.log(err);
     }
+    setIsLoggingIn(false);
   };
   return (
     <div className={styles.login}>
@@ -145,11 +153,19 @@ export default function Login() {
 
           {isSignup ? (
             <button className={styles.authButton} onClick={handleSignUp}>
-              Sign Up
+              {isSigningUp ? (
+                <LoaderCircle className={styles.spin} />
+              ) : (
+                "Sign Up"
+              )}
             </button>
           ) : (
             <button className={styles.authButton} onClick={handleLogin}>
-              Log In
+              {isLoggingIn ? (
+                <LoaderCircle className={styles.spin} />
+              ) : (
+                "Log In"
+              )}
             </button>
           )}
         </form>
