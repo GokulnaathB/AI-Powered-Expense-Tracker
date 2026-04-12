@@ -86,7 +86,7 @@ export default function Login() {
         <IndianRupee color="white" />
       </div>
 
-      <h2 className={styles.h2}>Expense Tracker</h2>
+      <h2 className={styles.h2}>AI-Powered Expense Tracker</h2>
       <p className={styles.text1}>Manage your finances with ease</p>
 
       <div className={styles.authBox}>
